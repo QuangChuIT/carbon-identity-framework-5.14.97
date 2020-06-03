@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://use.fontawesome.com/releases/v5.5.0/css/all.css');
+body {
+    background: #f5f1ef;
+    font-family: 'Roboto', Helvetica, sans-serif !important;
+    font-weight: 300;
+    min-height: 100%;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    text-align: left;
+    position: relative;
+    color: #212529 !important;
+}
+
+header {
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
+header .brand a {
+    min-height: 24px;
+}
+
+header .brand img.logo {
+    height: 24px;
+}
+
+header .brand h1 {
+    margin: 0 0 0 5px;
+    display: inline-block;
+    line-height: 1;
+}
+
+header .brand h1 em {
+    font-weight: 500;
+    font-size: 23px;
+    margin: 0;
+    color: #ffffff;
+    padding: 3px 0 0 0;
+    font-style: normal;
+    text-transform: uppercase;
+}
+
+.header-block .unit-logo .image-logo {
+    margin-top: 16px;
+    margin-bottom: 0px;
+    width: 100px;
+    height: 100px;
+}
+
+.header-block .title_logo {
+    margin-top: 16px;
+    margin-bottom: 0px;
+    font-size: 20px;
+    font-family: sans-serif;
+    color: #c76341;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    min-height: 40px;
+    overflow: hidden;
+    color: #ffffff;
+    background: #3a9ecf;
+}
+footer > .container, footer > .container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+footer > .container p, footer > .container-fluid p {
+    line-height: 40px;
+    margin-bottom: 0;
+}
+footer a, footer a:hover {
+    color: #cbcbcb;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+.padding-double {
+    padding: 20px !important;
+}
+.white {
+    color: #FFF;
+}
+.blue-bg {
+    background-color: #c76341 !important;
+}
+.uppercase {
+    text-transform: uppercase;
+}
+.boarder-all {
+    border: 1px solid #d8d8d8;
+    background: #FFF;
+    margin-top: 24px;
+    border-radius: 8px;
+}
+.title-login{
+    ext-align: center;
+    color: #ec9b80;
+    font-size: 24px;
+    font-family: sans-serif;
+    font-weight: bold;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding: 13px 0;
+}
+.font-large {
+    font-size: 16px;
+}
+.wr-input-control {
+    margin-bottom: 20px;
+}
+.wr-login {
+    margin: auto;
+}
+
+.wr-btn {
+    font-weight: normal;
+    font-size: 13px;
+    color: #fff;
+    background: #5d81d2;
+    padding: 10px 10px;
+    display: inline-block;
+    border: none;
+}
+button.grey-bg:hover {
+    background-color: rgb(207, 113, 58);
+}
+.wr-btn:hover {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #6b94f1;
+}
+button.grey-bg {
+    background-color: #e68565;
+}
+button.font-extra-large {
+    font-size: 20px;
+    border-radius: 5px;
+}
+img.idp-image {
+    padding: 3px 2px;
+}
+
+
+.padding-left {padding-left:10px;}
+.padding-right {padding-right:10px;}
+.padding-top {padding-top:10px;}
+.padding-bottom {padding-bottom:10px;}
+.padding{padding:10px;}
+.padding-none{ padding:0px !important;}
+
+.padding-left-double {padding-left:20px;}
+.padding-right-double {padding-right:20px;}
+.padding-top-double {padding-top:20px;}
+.padding-bottom-double {padding-bottom:20px;}
+.padding-double{padding:20px;}
+
+.margin-left {margin-left:10px;}
+.margin-right {margin-right:10px;}
+.margin-top {margin-top:10px;}
+.margin-bottom {margin-bottom:10px;}
+.margin-bottom-half {margin-bottom:5px;}
+.margin{margin:10px;}
+.margin-none{margin: 0px !important;}
+
+.margin-left-double {margin-left:20px;}
+.margin-right-double {margin-right:20px;}
+.margin-top-double {margin-top:20px;}
+.margin-bottom-double {margin-bottom:20px;}
+.margin-double{margin:20px;}
+.font-small{font-size:12px;}
+.font-medium{font-size:16px;}
+.font-large{font-size:1.3em;}
+.font-extra-large{font-size:20px !important;}
+
+.error-alert{
+    background-color: #FFE7E8;
+}
+
+.form-group.required .control-label:after {
+    content:" *";
+    color:red;
+}
+span.required{
+    color: red;
+    vertical-align: middle;
+}
+span.mandatory{
+    color: red;
+    vertical-align: middle;
+    font-size: 12px;
+}
+span.mandatory-msg{
+    color: red;
+}
+.select-all .checkbox{
+    padding: 10px;
+}
+.claim-list{
+    max-height: 225px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.claim-list .checkbox{
+    background: #d9edf7;;
+    padding: 4px 10px;
+    margin-bottom: 2px;
+}
+
+
+.claim-list .checkbox label{
+    display: block;
+}
+
+.border-top{
+    border-top: 1px solid #d8d8d8;
+}
+.padding-bottom-100{
+    padding-bottom: 100px;
+}
+.padding-10{
+    padding: 10px;
+}
+.margin-bottom-3{
+    margin-bottom: 3px;
+}
+.table-of-contents {
+    margin-top: 50px;
+    background: #eeeeee;
+    border: 1px solid #d8d8d8;
+    padding: 1em 2em;
+}
+.table-of-contents ul {
+    padding: 0;
+}
+.table-of-contents li {
+    margin: 0 0 0.25em 0;
+}
+.table-of-contents li.sub{
+    text-indent: 20px;
+    list-style-type: circle;
+    list-style-position: inside;
+}
+.table-of-contents a {
+    text-decoration: none;
+}
+.table-of-contents a:hover,
+.table-of-contents a:active {
+    text-decoration: underline;
+}
+
+h2:target {
+    animation: highlight 2s ease;
+}
+
+@keyframes highlight {
+    from { background: #eeffa0; }
+    to { background: #fff; }
+}
+
+.border-blue{
+    border:1px solid #bce8f1;
+}
+.border-gray{
+    border:1px solid #e1e1e1;
+}
+.claim-alert p{
+    margin: 0;
+}
+.claim-alert{
+    padding: 10px;
+    color: #666666;
+    border-bottom: 1px solid #d8d8d8;
+    font-size: 13px;
+}
+input[type=reset].btn, .btn-primary + .btn{
+    border: 1px solid #dadada;
+    background: #f7f7f7;
+}
+
+.section-heading-5{
+    color: #bdbdbd;
+    margin-bottom: 5px;
+}
+.scopes-list{
+    margin: 0;
+    padding-left: 30px;
+}
+.scope-approval-container{
+    border-top: 1px solid #d8d8d8;
+}
+.scope-approval-container .radio{
+    padding: 4px 10px;
+    margin-bottom: 2px;
+}
+.login-header{
+    text-align: center;
+    color: #3670aa;
+}
+.login-header h2{
+    font-size: 26px !important;
+}
+.wr-login input[type=text], .wr-login input[type=password]{
+    border: 1px #ec9b80 solid;
+    width: 100%;
+    height: 40px;
+    padding: 6px 10px;
+    z-index: 1;
+    -webkit-appearance: none;
+    line-height: 30px;
+    border-radius: 6px;
+}
+.wr-login input[type=text]:focus, .wr-login input[type=password]:focus{
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+
+}
+.wr-login label {
+    font-weight: 300 !important;
+}
+
+.wr-content{
+    padding-top: 24px;
+    padding-bottom: 50px;
+}
+.btn_login{
+    font-family: sans-serif;
+    font-size: 16px;
+    min-height: 38px;
+    margin-bottom: 24px;
+    color: #fff;
+    background-color: #e68565;
+    padding: 0px;
+    border: none;
+    border-radius: 6px;
+}
