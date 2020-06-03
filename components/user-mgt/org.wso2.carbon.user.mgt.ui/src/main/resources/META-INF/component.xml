@@ -75,6 +75,12 @@
             <display-name>UserAndRoleManagement</display-name>
             <servlet-class>org.wso2.carbon.user.mgt.ui.servlet.UserAndRoleManagementServlet</servlet-class>
         </servlet>
+        <servlet id="ExportUserMgt">
+            <servlet-name>exportuser</servlet-name>
+            <url-pattern>/exportuser</url-pattern>
+            <display-name>ExportUserManagement</display-name>
+            <servlet-class>org.wso2.carbon.user.mgt.ui.servlet.ExportUserManagementServlet</servlet-class>
+        </servlet>
     </servlets>
 
 </component>

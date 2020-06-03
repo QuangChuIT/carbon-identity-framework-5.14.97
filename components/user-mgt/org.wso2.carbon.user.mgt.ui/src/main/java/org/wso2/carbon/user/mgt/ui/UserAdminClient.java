@@ -26,10 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.user.mgt.stub.UserAdminStub;
 import org.wso2.carbon.user.mgt.stub.UserAdminUserAdminException;
-import org.wso2.carbon.user.mgt.stub.types.carbon.ClaimValue;
-import org.wso2.carbon.user.mgt.stub.types.carbon.FlaggedName;
-import org.wso2.carbon.user.mgt.stub.types.carbon.UIPermissionNode;
-import org.wso2.carbon.user.mgt.stub.types.carbon.UserRealmInfo;
+import org.wso2.carbon.user.mgt.stub.types.carbon.*;
 
 import javax.activation.DataHandler;
 
@@ -42,7 +39,7 @@ public class UserAdminClient  {
     protected static final Log log = LogFactory.getLog(UserAdminClient.class);
 
     public UserAdminClient(String cookie, String url, String serviceName,
-            ConfigurationContext configContext) throws java.lang.Exception {
+                           ConfigurationContext configContext) throws java.lang.Exception {
         try {
             stub = new UserAdminStub(configContext, url + serviceName);
             ServiceClient client = stub._getServiceClient();
@@ -70,17 +67,17 @@ public class UserAdminClient  {
         }
     }
 
-	public void addRole(String roleName, String[] userList, String[] permissions,
-	                    boolean isSharedRole) throws AxisFault {
-		try {
-			stub.addRole(roleName, userList, permissions, isSharedRole);
-		} catch (Exception e) {
-			handleException(e);
-		}
-	}
+    public void addRole(String roleName, String[] userList, String[] permissions,
+                        boolean isSharedRole) throws AxisFault {
+        try {
+            stub.addRole(roleName, userList, permissions, isSharedRole);
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
 
     public void addInternalRole(String roleName, String[] userList, String[] permissions)
-                                                                        throws AxisFault {
+            throws AxisFault {
         try {
             stub.addInternalRole(roleName, userList, permissions);
         } catch (Exception e) {
@@ -89,7 +86,7 @@ public class UserAdminClient  {
     }
 
     public void addUser(String userName, String password, String[] roles, ClaimValue[] claims,
-            String profileName) throws AxisFault {
+                        String profileName) throws AxisFault {
         try {
             stub.addUser(userName, password, roles, claims, profileName);
         } catch (Exception e) {
@@ -168,9 +165,9 @@ public class UserAdminClient  {
     }
 
     public UserRealmInfo getUserRealmInfo() throws AxisFault {
-    	UserRealmInfo info = null;
+        UserRealmInfo info = null;
         try {
-        	info = stub.getUserRealmInfo();
+            info = stub.getUserRealmInfo();
         } catch (Exception e) {
             handleException(e);
         }
@@ -193,6 +190,15 @@ public class UserAdminClient  {
             handleException(e);
         }
         return new FlaggedName[0];
+    }
+
+    public UserProfileClient[] exportUsers(String filter, int limit) throws AxisFault {
+        try {
+            return stub.exportUsers(filter, limit);
+        } catch (Exception e) {
+            handleException(e);
+        }
+        return new UserProfileClient[0];
     }
 
     public FlaggedName[] listAllUsersWithPermission(String filter, String permission, int limit) throws AxisFault {
@@ -249,7 +255,7 @@ public class UserAdminClient  {
 
 
     public void addRemoveRolesOfUser(String userName, String[] newRoles, String[] deletedRoles)
-                                                                        throws AxisFault {
+            throws AxisFault {
         try {
             stub.addRemoveRolesOfUser(userName, newRoles, deletedRoles);
         } catch (Exception e) {
@@ -258,7 +264,7 @@ public class UserAdminClient  {
     }
 
     public void addRemoveUsersOfRole(String roleName, String[] newUsers, String[] deletedUsers)
-                                                                        throws AxisFault {
+            throws AxisFault {
         try {
             stub.addRemoveUsersOfRole(roleName, newUsers, deletedUsers);
         } catch (Exception e) {
@@ -269,7 +275,7 @@ public class UserAdminClient  {
     public FlaggedName[] listUserByClaim(ClaimValue claimValue, String filter, int limit) throws AxisFault {
         try {
             org.wso2.carbon.user.mgt.stub.types.carbon.ClaimValue abcdClaimValue = new
-                   org.wso2.carbon.user.mgt.stub.types.carbon.ClaimValue();
+                    org.wso2.carbon.user.mgt.stub.types.carbon.ClaimValue();
             abcdClaimValue.setClaimURI(claimValue.getClaimURI());
             abcdClaimValue.setValue(claimValue.getValue());
             return stub.listUserByClaim(abcdClaimValue, filter, limit);
@@ -295,14 +301,14 @@ public class UserAdminClient  {
         return new FlaggedName[0];
     }
 
-	public boolean hasMultipleUserStores() throws AxisFault{
-		try {
-			return stub.hasMultipleUserStores();
+    public boolean hasMultipleUserStores() throws AxisFault{
+        try {
+            return stub.hasMultipleUserStores();
         } catch (Exception e) {
             handleException(e);
         }
-		return false;
-	}
+        return false;
+    }
 
     protected String[] handleException(Exception e) throws AxisFault  {
 
@@ -322,12 +328,12 @@ public class UserAdminClient  {
 
     }
 
-	public boolean isSharedRolesEnabled() throws AxisFault {
-		try {
-			return stub.isSharedRolesEnabled();
-		} catch (Exception e) {
-			handleException(e);
-		}
-		return false;
-	}
+    public boolean isSharedRolesEnabled() throws AxisFault {
+        try {
+            return stub.isSharedRolesEnabled();
+        } catch (Exception e) {
+            handleException(e);
+        }
+        return false;
+    }
 }

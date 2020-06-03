@@ -31,11 +31,7 @@ import org.wso2.carbon.user.api.AuthorizationManager;
 import org.wso2.carbon.user.api.UserRealmService;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
-import org.wso2.carbon.user.mgt.common.ClaimValue;
-import org.wso2.carbon.user.mgt.common.FlaggedName;
-import org.wso2.carbon.user.mgt.common.UIPermissionNode;
-import org.wso2.carbon.user.mgt.common.UserAdminException;
-import org.wso2.carbon.user.mgt.common.UserRealmInfo;
+import org.wso2.carbon.user.mgt.common.*;
 import org.wso2.carbon.user.mgt.internal.UserMgtDSComponent;
 import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 
@@ -56,13 +52,13 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.UserAdmin#listInternalUsers(java.lang.String)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.TestClass#listUsers(java.lang.String)
      */
     public String[] listUsers(String filter, int limit) throws UserAdminException {
@@ -122,12 +118,12 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.UserAdmin#getInternalRoles()
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.TestClass#getAllRolesNames()
      */
     public FlaggedName[] getAllRolesNames(String filter, int limit) throws UserAdminException {
@@ -174,7 +170,7 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.TestClass#isWritable()
      */
     public UserRealmInfo getUserRealmInfo() throws UserAdminException {
@@ -183,14 +179,14 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.UserAdmin#addUserToInternalStore(java.lang.String
      * , java.lang.String, java.lang.String[])
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.TestClass#addUser(java.lang.String,
      * java.lang.String, java.lang.String[], java.util.Map, java.lang.String)
      */
@@ -205,13 +201,13 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.UserAdmin#changePassword(java.lang.String,
      * java.lang.String)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.TestClass#changePassword(java.lang.String,
      * java.lang.String)
      */
@@ -227,14 +223,14 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.UserAdmin#deleteUserFromInternalStore(java.lang
      * .String)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.TestClass#deleteUser(java.lang.String)
      */
     public void deleteUser(String userName) throws UserAdminException {
@@ -251,14 +247,14 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.UserAdmin#addRoleToInternalStore(java.lang.String
      * , java.lang.String[], java.lang.String[])
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.TestClass#addRole(java.lang.String,
      * java.lang.String[], java.util.Map)
      */
@@ -330,14 +326,14 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.UserAdmin#deleteRoleFromInternalStore(java.lang
      * .String)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.TestClass#deleteRole(java.lang.String)
      */
     public void deleteRole(String roleName) throws UserAdminException {
@@ -371,12 +367,12 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.UserAdmin#getUsersInRole(java.lang.String)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.TestClass#getUsersInfoOfRole(java.lang.String,
      * java.lang.String)
@@ -387,14 +383,14 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.UserAdmin#updateUsersOfRole(java.lang.String,
      * java.lang.String[], java.lang.String[])
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.TestClass#updateUsersOfRole(java.lang.String,
      * java.lang.String[], java.lang.String[])
@@ -411,12 +407,12 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.wso2.carbon.user.mgt.UserAdmin#getUsersInRole(java.lang.String)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.TestClass#getRoleInfoOfUser(java.lang.String)
      */
@@ -431,7 +427,7 @@ public class UserAdmin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.wso2.carbon.user.mgt.TestClass#updateRolesOfUser(java.lang.String,
      * java.lang.String)
@@ -627,5 +623,18 @@ public class UserAdmin {
 
     public boolean isSharedRolesEnabled() throws UserAdminException {
         return getUserAdminProxy().isSharedRolesEnabled();
+    }
+
+    /**
+     * @param filter
+     * @param limit
+     * @return
+     * @throws UserAdminException
+     */
+    public UserProfileClient[] exportUsers(String filter, int limit) throws UserAdminException {
+
+        UserProfileClient[] userProfiles;
+        userProfiles = getUserAdminProxy().exportUsers(filter, limit);
+        return userProfiles;
     }
 }
