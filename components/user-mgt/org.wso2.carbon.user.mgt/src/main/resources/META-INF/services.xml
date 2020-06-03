@@ -180,6 +180,11 @@
             </parameter>
         </operation>
 
+        <operation name="exportUsers">
+            <parameter name="AuthorizationAction" locked="true">/permission/admin/login
+            </parameter>
+        </operation>
+
         <operation name="updateRoleName">
             <parameter name="AuthorizationAction" locked="true">/permission/admin/manage/identity/rolemgt/update
             </parameter>

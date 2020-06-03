@@ -47,25 +47,19 @@ import org.wso2.carbon.user.mgt.bulkimport.BulkImportConfig;
 import org.wso2.carbon.user.mgt.bulkimport.CSVUserBulkImport;
 import org.wso2.carbon.user.mgt.bulkimport.ExcelUserBulkImport;
 import org.wso2.carbon.user.mgt.bulkimport.UserBulkImport;
-import org.wso2.carbon.user.mgt.common.ClaimValue;
-import org.wso2.carbon.user.mgt.common.FlaggedName;
-import org.wso2.carbon.user.mgt.common.UIPermissionNode;
-import org.wso2.carbon.user.mgt.common.UserAdminException;
-import org.wso2.carbon.user.mgt.common.UserRealmInfo;
-import org.wso2.carbon.user.mgt.common.UserStoreInfo;
+import org.wso2.carbon.user.mgt.common.*;
 import org.wso2.carbon.user.mgt.internal.UserMgtDSComponent;
 import org.wso2.carbon.user.mgt.permission.ManagementPermissionUtil;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
+import org.wso2.carbon.user.core.model.UserProfile;
 
+import javax.naming.Context;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.*;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -704,11 +698,11 @@ public class UserRealmProxy {
 
 
     private boolean isBulkImportSupported(RealmConfiguration realmConfig) throws UserAdminException {
-            if (realmConfig != null) {
-                return Boolean.valueOf(realmConfig.getUserStoreProperties().get("IsBulkImportSupported"));
-            } else {
-                throw new UserAdminException("Unable to retrieve user store manager from realm.");
-            }
+        if (realmConfig != null) {
+            return Boolean.valueOf(realmConfig.getUserStoreProperties().get("IsBulkImportSupported"));
+        } else {
+            throw new UserAdminException("Unable to retrieve user store manager from realm.");
+        }
     }
 
     /**
@@ -1062,8 +1056,8 @@ public class UserRealmProxy {
             String domain = domainProvided ? roleName.substring(0, index) : null;
 
             if (domain != null && filter != null && !filter.toLowerCase().startsWith(domain.toLowerCase()) &&
-                !(UserCoreConstants.INTERNAL_DOMAIN.equalsIgnoreCase(domain)
-                  || UserMgtConstants.APPLICATION_DOMAIN.equalsIgnoreCase(domain))) {
+                    !(UserCoreConstants.INTERNAL_DOMAIN.equalsIgnoreCase(domain)
+                            || UserMgtConstants.APPLICATION_DOMAIN.equalsIgnoreCase(domain))) {
                 filter = domain + CarbonConstants.DOMAIN_SEPARATOR + filter;
             }
 
@@ -1109,7 +1103,7 @@ public class UserRealmProxy {
                         fName.setItemDisplayName(anUsersOfRole);
                     }
                     if (domain != null && !(UserCoreConstants.INTERNAL_DOMAIN.equalsIgnoreCase(domain)
-                                            || UserMgtConstants.APPLICATION_DOMAIN.equalsIgnoreCase(domain))) {
+                            || UserMgtConstants.APPLICATION_DOMAIN.equalsIgnoreCase(domain))) {
                         if (usMan.getSecondaryUserStoreManager(domain) != null &&
                                 (usMan.getSecondaryUserStoreManager(domain).isReadOnly() ||
                                         FALSE.equals(usMan.getSecondaryUserStoreManager(domain).getRealmConfiguration().
@@ -1193,7 +1187,7 @@ public class UserRealmProxy {
                     fName.setItemName(userNames[i]);
                 }
                 if (domain != null && !(UserCoreConstants.INTERNAL_DOMAIN.equalsIgnoreCase(domain) ||
-                                        UserMgtConstants.APPLICATION_DOMAIN.equalsIgnoreCase(domain))) {
+                        UserMgtConstants.APPLICATION_DOMAIN.equalsIgnoreCase(domain))) {
                     if (usMan.getSecondaryUserStoreManager(domain) != null &&
                             (usMan.getSecondaryUserStoreManager(domain).isReadOnly() ||
                                     FALSE.equals(usMan.getSecondaryUserStoreManager(domain).getRealmConfiguration().
@@ -2337,5 +2331,36 @@ public class UserRealmProxy {
         public int compare(ClaimMapping o1, ClaimMapping o2) {
             return o1.getClaim().getClaimUri().compareTo(o2.getClaim().getClaimUri());
         }
+    }
+
+    public UserProfileClient[] exportUsers(String filter, int maxLimit) throws UserAdminException {
+        UserProfileClient[] allUsers = null;
+        UserProfile[] allUsersTemp = null;
+        Map<String, Integer> userCount = new HashMap<String, Integer>();
+        try {
+            UserStoreManager userStoreManager = realm.getUserStoreManager();
+            allUsersTemp = userStoreManager.exportUsers(filter, maxLimit);
+            if(allUsersTemp != null && allUsersTemp.length > 0) {
+                allUsers = new UserProfileClient[allUsersTemp.length];
+                for(int i = 0; i < allUsersTemp.length; i++) {
+                    allUsers[i] = new UserProfileClient();
+                    allUsers[i].setProfileName(allUsersTemp[i].getProfileName());
+                    allUsers[i].setFirstName(allUsersTemp[i].getFirstName());
+                    allUsers[i].setLastName(allUsersTemp[i].getLastName());
+                    allUsers[i].setFullName(allUsersTemp[i].getFullName());
+                    allUsers[i].setOrganization(allUsersTemp[i].getOrganization());
+                    allUsers[i].setCountry(allUsersTemp[i].getCountry());
+                    allUsers[i].setEmail(allUsersTemp[i].getEmail());
+                    allUsers[i].setTelephone(allUsersTemp[i].getTelephone());
+                    allUsers[i].setMobile(allUsersTemp[i].getMobile());
+                    allUsers[i].setDepartment(allUsersTemp[i].getDepartment());
+                    allUsers[i].setRole(allUsersTemp[i].getRole());
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new UserAdminException(e.getMessage(), e);
+        }
+        return allUsers;
     }
 }

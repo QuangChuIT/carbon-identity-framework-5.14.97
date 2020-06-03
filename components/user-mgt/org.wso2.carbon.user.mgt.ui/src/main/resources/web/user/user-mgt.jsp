@@ -387,6 +387,14 @@
             CARBON.showConfirmationDialog("<fmt:message key="confirm.delete.user"/> \'" + user + "\'?", doDelete, null);
         }
 
+        function doExportUser() {
+            var domain = document.getElementById("domain").value;
+            // var filter = document.getElementById("filter").value;
+            var link = document.getElementById("exportUser");
+            link.setAttribute("href", "<%=request.getContextPath()%>/exportuser?domain=" + domain);
+            return true;
+        }
+
         $(document).ready(function () {
             $('form[name=filterForm]').submit(function(){
                 return doValidateForm(this, '<fmt:message key="error.input.validation.msg"/>');
@@ -404,7 +412,7 @@
         <h2><fmt:message key="users"/></h2>
 
         <div id="workArea">
-            <form name="filterForm" method="post" action="user-mgt.jsp">
+            <form name="filterForm" method="post" id="filterForm" action="user-mgt.jsp">
                 <table class="styledLeft noBorders">
                     <thead>
                     <tr>
@@ -438,7 +446,10 @@
                                 }
                             %>
                         </select>
+                            <a href="#" id="exportUser" class="button" onclick="return doExportUser();"><fmt:message
+                                    key="export.user"/></a>
                         </td>
+
                     </tr>
                     <%
                         }
@@ -448,7 +459,7 @@
                         <td class="leftCol-big" style="padding-right: 0 !important;"><fmt:message
                                 key="list.users"/></td>
                         <td>
-                            <input type="text" name="<%=UserAdminUIConstants.USER_LIST_FILTER%>"
+                            <input type="text" id="filter" name="<%=UserAdminUIConstants.USER_LIST_FILTER%>"
                                    value="<%=Encode.forHtmlAttribute(filter)%>" label="<fmt:message key="list.users"/>"
                                    black-list-patterns="xml-meta-exists"/>
 
@@ -735,8 +746,8 @@
                         %>
                         <a
                                 href="../identity-authorization/permission-root.jsp?userName=<%=Encode.forUriComponent(encryptedUsername)%>&fromUserMgt=true"
-                           class="icon-link"
-                           style="background-image:url(../admin/images/edit.gif);"><fmt:message
+                                class="icon-link"
+                                style="background-image:url(../admin/images/edit.gif);"><fmt:message
                                 key="authorization"/></a>
                         <%
                             }
@@ -749,8 +760,8 @@
                         %>
                         <a
                                 href="../userprofile/index.jsp?username=<%=Encode.forUriComponent(encryptedUsername)%>&displayName=<%=Encode.forUriComponent(displayName)%>&fromUserMgt=true"
-                           class="icon-link"
-                           style="background-image:url(../userprofile/images/my-prof.gif);">User
+                                class="icon-link"
+                                style="background-image:url(../userprofile/images/my-prof.gif);">User
                             Profile</a>
                         <%
                             }
@@ -866,8 +877,8 @@
                         %>
                         <a
                                 href="../identity-authorization/permission-root.jsp?userName=<%=Encode.forUriComponent(encryptedUsername)%>&fromUserMgt=true"
-                           class="icon-link"
-                           style="background-image:url(../admin/images/edit.gif);"><fmt:message
+                                class="icon-link"
+                                style="background-image:url(../admin/images/edit.gif);"><fmt:message
                                 key="authorization"/></a>
                         <%
                             }
