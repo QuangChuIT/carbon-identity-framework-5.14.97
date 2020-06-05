@@ -893,8 +893,7 @@
                                     "/permission/admin/configure/security/usermgt/profiles")) {
                         %>
                         <a href="../userprofile/index.jsp?username=<%=Encode.forUriComponent(encryptedUsername)%>&displayName=<%=Encode.forUriComponent(displayName)%>&fromUserMgt=true"
-                           class="icon-link" style="background-image:url(../userprofile/images/my-prof.gif);">User
-                            Profile</a>
+                           class="icon-link" style="background-image:url(../userprofile/images/my-prof.gif);"><fmt:message key="user.profile"/></a>
                         <%
                             }
                         %>

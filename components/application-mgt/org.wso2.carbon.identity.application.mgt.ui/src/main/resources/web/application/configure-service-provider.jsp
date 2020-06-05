@@ -816,7 +816,7 @@
                 '</td><td><a onclick="removeSpClaimDialect(\'' + encodeForHTML(encodeQuotesForJavascript(spClaimDialect)) +
                 '\', \'spClaimDialectUri_' +
                 parseInt(currentColumnId) + '\');return false;"' +
-                ' href="#" class="icon-link" style="background-image: url(../admin/images/delete.gif)">Delete</a></td></tr>';
+                ' href="#" class="icon-link" style="background-image: url(../admin/images/delete.gif)"><fmt:message key='link.delete'/></a></td></tr>';
             $('#spClaimDialectsTable tbody').append(row);
         } else {
             var isExist = false;
@@ -840,7 +840,7 @@
                 encodeForHTML(encodeQuotesForJavascript(spClaimDialect)) +
                 '\', \'spClaimDialectUri_' +
                 parseInt(currentColumnId) + '\');return false;"' +
-                ' href="#" class="icon-link" style="background-image: url(../admin/images/delete.gif)">Delete</a></td></tr>';
+                ' href="#" class="icon-link" style="background-image: url(../admin/images/delete.gif)"><fmt:message key='link.delete'/></a></td></tr>';
             $('#spClaimDialectsTable tr:last').after(row);
         }
         $("#standard_dialect").val("");
@@ -940,7 +940,7 @@
             jQuery('#permissionAddTable').append(jQuery('<tr><td class="leftCol-big"><input style="width: 98%;" type="text" id="app_permission" name="app_permission"/></td>' +
                 '<td><a onclick="deletePermissionRow(this)" class="icon-link" ' +
                 'style="background-image: url(images/delete.gif)">' +
-                'Delete' +
+                '<fmt:message key='link.delete'/>' +
                 '</a></td></tr>'));
         });
         jQuery('#claimMappingAddLink').click(function () {
@@ -964,7 +964,7 @@
                     '<td>' + idpClaimListDiv.html() + '</td>' +
                     '<td style="display:none;"><input type="checkbox"  name="spClaim_req_' + claimMappinRowID + '"  id="spClaim_req_' + claimMappinRowID + '" checked/></td>' +
                     '<td><input type="checkbox"  name="spClaim_mand_' + claimMappinRowID + '"  id="spClaim_mand_' + claimMappinRowID + '"/></td>' +
-                    '<td><a onclick="deleteClaimRow(this);return false;" href="#" class="icon-link" style="background-image: url(images/delete.gif)"> Delete</a></td>' +
+                    '<td><a onclick="deleteClaimRow(this);return false;" href="#" class="icon-link" style="background-image: url(images/delete.gif)"> <fmt:message key='link.delete'/></a></td>' +
                     '</tr>'));
             }
             else {
@@ -975,7 +975,7 @@
                     '<td>' + idpClaimListDiv.html() + '</td>' +
                     '<td><input type="checkbox"  name="spClaim_req_' + claimMappinRowID + '"  id="spClaim_req_' + claimMappinRowID + '"/></td>' +
                     '<td><input type="checkbox"  name="spClaim_mand_' + claimMappinRowID + '"  id="spClaim_mand_' + claimMappinRowID + '"/></td>' +
-                    '<td><a onclick="deleteClaimRow(this);return false;" href="#" class="icon-link" style="background-image: url(images/delete.gif)"> Delete</a></td>' +
+                    '<td><a onclick="deleteClaimRow(this);return false;" href="#" class="icon-link" style="background-image: url(images/delete.gif)"> <fmt:message key='link.delete'/></a></td>' +
                     '</tr>'));
                 $('#spClaim_' + claimMappinRowID).change(function () {
                     resetRoleClaims();
@@ -988,7 +988,7 @@
             $('#roleMappingAddTable').show();
             jQuery('#roleMappingAddTable').append(jQuery('<tr><td><input style="width: 98%;" class="roleMapIdp" type="text" id="idpRole_' + roleMappinRowID + '" name="idpRole_' + roleMappinRowID + '"/></td>' +
                 '<td><input style="width: 98%;" class="roleMapSp" type="text" id="spRole_' + roleMappinRowID + '" name="spRole_' + roleMappinRowID + '"/></td> ' +
-                '<td><a onclick="deleteRoleMappingRow(this);return false;" href="#" class="icon-link" style="background-image: url(images/delete.gif)"> Delete</a>' +
+                '<td><a onclick="deleteRoleMappingRow(this);return false;" href="#" class="icon-link" style="background-image: url(images/delete.gif)"> <fmt:message key='link.delete'/></a>' +
                 '</td></tr>'));
         })
         jQuery('#reqPathAuthenticatorAddLink').click(function () {
@@ -1342,7 +1342,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="width:15%" class="leftCol-med labelField">Description:</td>
+                            <td style="width:15%" class="leftCol-med labelField"><fmt:message key='description'/>:</td>
                             <td>
                                 <textarea maxlength="1023" style="width:50%" type="text" name="sp-description" id="sp-description"
                                           class="text-box-big"><%=appBean.getServiceProvider().getDescription() != null ? Encode.forHtmlContent(appBean.getServiceProvider().getDescription()) : "" %></textarea>
@@ -1354,7 +1354,7 @@
 
                         <!-- Add radio button to select certificate or jwks end point fro sp -->
                         <tr>
-                            <td class="leftCol-med labelField"> Select SP Certificate Type </td>
+                            <td class="leftCol-med labelField"> <fmt:message key='config.application.SPCertType'/> </td>
                                 <td>
                                     <label style="display:block">
                                     <input type="radio" id="choose_jwks_uri" name="choose_certificate_type"
@@ -1504,8 +1504,14 @@
                     <table class="carbonFormTable">
                         <tr>
                             <td class="leftCol-med labelField" style="width:15%">
-                                <label
-                                    id="addClaimUrisLbl"><%=isLocalClaimsSelected ? "Requested Claims:" : "Identity Provider Claim URIs:"%>
+                                <label id="addClaimUrisLbl">
+                                    <%
+                                        if(isLocalClaimsSelected) {
+                                    %>
+                                    <fmt:message key="config.requestClaim"/>
+                                    <%  } else { %>
+                                    <fmt:message key="config.identityProvider"/>
+                                    <%  } %>
                                 </label>
                             </td>
                             <td class="leftCol-med">
@@ -1602,7 +1608,7 @@
                             <td>
                                 <select class="leftCol-med" id="subject_claim_uri" name="subject_claim_uri"
                                         style=" margin-left: 5px; ">
-                                    <option value="">---Select---</option>
+                                    <option value="">---<fmt:message key='select'/>---</option>
                                     <% if (isLocalClaimsSelected) {
                                         String[] localClaimUris = appBean.getClaimUris();
                                         for (String localClaimName : localClaimUris) {
@@ -1663,7 +1669,7 @@
                                 </td>
                                 <td>
                                     <select id="roleClaim" name="roleClaim" style="float:left;min-width: 250px;">
-                                        <option value="">---Select---</option>
+                                        <option value="">---<fmt:message key='select'/>---</option>
                                         <% if (!isLocalClaimsSelected) {
                                             for (Map.Entry<String, String> entry : claimMapping.entrySet()) { %>
                                         <% if (entry.getValue() != null && !entry.getValue().isEmpty()) {
@@ -1702,7 +1708,7 @@
                                 <td>
                                     <select class="leftCol-med" id="standard_dialect" name="standard_dialect"
                                             style=" margin-left: 5px; ">
-                                        <option value="">---Select---</option>
+                                        <option value="">---<fmt:message key='select'/>---</option>
                                         <%
                                             for (String dialectURI : claimDialectUris) {%>
                                         <option
@@ -1920,7 +1926,7 @@
                 <div class="toggle_container sectionSub" style="margin-bottom:10px;" id="permissionConfRow">
                     <h2 id="permission_mapping_head" class="sectionSeperator trigger active"
                         style="background-color: beige;">
-                        <a href="#">Permissions</a>
+                        <a href="#"><fmt:message key='permissions'/></a>
                     </h2>
                     <div class="toggle_container sectionSub" style="margin-bottom:10px;display: none;"
                          id="appPermissionRow">
@@ -1973,7 +1979,7 @@
                         </table>
                     </div>
                     <h2 id="role_mapping_head" class="sectionSeperator trigger active" style="background-color: beige;">
-                        <a href="#">Role Mapping</a>
+                        <a href="#"><fmt:message key='roleMapping'/></a>
                     </h2>
                     <div class="toggle_container sectionSub" style="margin-bottom:10px;display: none;"
                          id="roleMappingRowRow">
@@ -2225,7 +2231,7 @@
 
                                 <h2 id="openid.config.head" class="sectionSeperator trigger active"
                                     style="background-color: beige;">
-                                    <a href="#">OpenID Configuration</a>
+                                    <a href="#"><fmt:message key='tilte.config.openID'/></a>
                                     <div class="enablelogo"><img src="images/ok.png" width="16" height="16"></div>
                                 </h2>
                                 <div class="toggle_container sectionSub" style="margin-bottom:10px;display:none;"
@@ -2260,7 +2266,7 @@
 
                                 <h2 id="passive.sts.config.head" class="sectionSeperator trigger active"
                                     style="background-color: beige;">
-                                    <a href="#">WS-Federation (Passive) Configuration</a>
+                                    <a href="#"><fmt:message key='title.config.WS'/></a>
                                     <div class="enablelogo"><img src="images/ok.png" width="16" height="16"></div>
                                 </h2>
                                 <div class="toggle_container sectionSub" style="margin-bottom:10px;display:none;"
@@ -2804,7 +2810,7 @@
                                                                     style="float: left; min-width: 150px;font-size:13px;"><%=requestPathAuthTypes.toString()%>
                                                             </select>
                                                             <a id="reqPathAuthenticatorAddLink" class="icon-link"
-                                                               style="background-image:url(images/add.gif);">Add</a>
+                                                               style="background-image:url(images/add.gif);"><fmt:message key='menu.service.providers.add'/></a>
                                                             <div style="clear:both"></div>
                                                             <div class="sectionHelp">
                                                                 <fmt:message key='help.local.authnticators'/>
@@ -2864,12 +2870,7 @@
                                                  id="scim-inbound-provisioning-div">
                                                 <table class="carbonFormTable">
                                                     <tr>
-                                                        <td>Service provider based SCIM provisioning is protected via
-                                                            OAuth 2.0.
-                                                            Your service provider must have a valid OAuth 2.0 client key
-                                                            and a client secret to invoke the SCIM API.
-                                                            To create OAuth 2.0 key/secret : Inbound Authentication
-                                                            Configuration -> OAuth/OpenID Connect Configuration.<br/>
+                                                        <td><fmt:message key="help.scim.detail"/><br/>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -2877,7 +2878,7 @@
                                                             <select style="min-width: 250px;"
                                                                     id="scim-inbound-userstore"
                                                                     name="scim-inbound-userstore" <%=appBean.getServiceProvider().getInboundProvisioningConfig().getDumbMode() ? "disabled" : "" %>>
-                                                                <option value="">---Select---</option>
+                                                                <option value="">---<fmt:message key='select'/>---</option>
                                                                 <%
                                                                     if (userStoreDomains != null && userStoreDomains.length > 0) {
                                                                         for (String userStoreDomain : userStoreDomains) {
@@ -2948,8 +2949,7 @@
                                                 </thead>
                                                 <% } else { %>
                                                 <tr>
-                                                    <td colspan="4" style="border: none;">There are no provisioning
-                                                        enabled identity providers defined in the system.
+                                                    <td colspan="4" style="border: none;"><fmt:message key="help.provision.detail"/>
                                                     </td>
                                                 </tr>
                                                 <%} %>

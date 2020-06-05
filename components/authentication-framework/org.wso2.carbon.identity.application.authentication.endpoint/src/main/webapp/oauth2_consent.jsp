@@ -45,7 +45,7 @@
     
     /*
         This parameter decides whether the consent page will only be used to get consent for sharing claims with the
-        Service Provider. If this param is 'true' and user has already given consents for the OIDC scopes, we will be
+        . If this param is 'true' and user has already given consents for the OIDC scopes, we will be
         hiding the scopes being displayed and the approve always button.
     */
     boolean userClaimsConsentOnly = Boolean.parseBoolean(request.getParameter(Constants.USER_CLAIMS_CONSENT_ONLY));
