@@ -31,6 +31,7 @@ import org.wso2.carbon.user.api.AuthorizationManager;
 import org.wso2.carbon.user.api.UserRealmService;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.user.core.model.UserProfile;
 import org.wso2.carbon.user.mgt.common.*;
 import org.wso2.carbon.user.mgt.internal.UserMgtDSComponent;
 import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
@@ -631,10 +632,10 @@ public class UserAdmin {
      * @return
      * @throws UserAdminException
      */
-    public UserProfileClient[] exportUsers(String filter, int limit) throws UserAdminException {
+    public UserProfileClient[] exportUsers(String filter, int limit, String paramAtts) throws UserAdminException {
 
         UserProfileClient[] userProfiles;
-        userProfiles = getUserAdminProxy().exportUsers(filter, limit);
+        userProfiles = getUserAdminProxy().exportUsers(filter, limit, paramAtts);
         return userProfiles;
     }
 }

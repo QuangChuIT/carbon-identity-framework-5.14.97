@@ -387,12 +387,16 @@
             CARBON.showConfirmationDialog("<fmt:message key="confirm.delete.user"/> \'" + user + "\'?", doDelete, null);
         }
 
-        function doExportUser() {
+        function openExportPage() {
+            // var left = (screen.width/2)-(w/2);
+            // var top = (screen.height/2)-(h/2);
             var domain = document.getElementById("domain").value;
-            // var filter = document.getElementById("filter").value;
-            var link = document.getElementById("exportUser");
-            link.setAttribute("href", "<%=request.getContextPath()%>/exportuser?domain=" + domain);
-            return true;
+            var url = "export-user.jsp?domain=" + domain;
+            // window.open(url, "Export User", 'toolbar=no, location=no, directories=no, ' +
+            //     'status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no,' +
+            //     ' width='+w+', height='+h+', top='+top+', left='+left);
+            window.open(url);
+            // return true;
         }
 
         $(document).ready(function () {
@@ -410,7 +414,6 @@
 
     <div id="middle">
         <h2><fmt:message key="users"/></h2>
-
         <div id="workArea">
             <form name="filterForm" method="post" id="filterForm" action="user-mgt.jsp">
                 <table class="styledLeft noBorders">
@@ -446,8 +449,8 @@
                                 }
                             %>
                         </select>
-                            <a href="#" id="exportUser" class="button" onclick="return doExportUser();"><fmt:message
-                                    key="export.user"/></a>
+                            <input class="button" type="button" onclick="openExportPage();"
+                                   value="<fmt:message key="export.user"/>"/>
                         </td>
 
                     </tr>

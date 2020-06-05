@@ -2333,34 +2333,42 @@ public class UserRealmProxy {
         }
     }
 
-    public UserProfileClient[] exportUsers(String filter, int maxLimit) throws UserAdminException {
-        UserProfileClient[] allUsers = null;
+    public UserProfileClient[] exportUsers(String filter, int maxLimit, String paramAtts) throws UserAdminException {
         UserProfile[] allUsersTemp = null;
-        Map<String, Integer> userCount = new HashMap<String, Integer>();
+        UserProfileClient[] allUsers = null;
+        List<UserProfileClient> profileClients = new ArrayList<>();
+        String[] atts = paramAtts.split(",");
         try {
             UserStoreManager userStoreManager = realm.getUserStoreManager();
-            allUsersTemp = userStoreManager.exportUsers(filter, maxLimit);
+            allUsersTemp = userStoreManager.exportUsers(filter, maxLimit, paramAtts);
             if(allUsersTemp != null && allUsersTemp.length > 0) {
-                allUsers = new UserProfileClient[allUsersTemp.length];
                 for(int i = 0; i < allUsersTemp.length; i++) {
-                    allUsers[i] = new UserProfileClient();
-                    allUsers[i].setProfileName(allUsersTemp[i].getProfileName());
-                    allUsers[i].setFirstName(allUsersTemp[i].getFirstName());
-                    allUsers[i].setLastName(allUsersTemp[i].getLastName());
-                    allUsers[i].setFullName(allUsersTemp[i].getFullName());
-                    allUsers[i].setOrganization(allUsersTemp[i].getOrganization());
-                    allUsers[i].setCountry(allUsersTemp[i].getCountry());
-                    allUsers[i].setEmail(allUsersTemp[i].getEmail());
-                    allUsers[i].setTelephone(allUsersTemp[i].getTelephone());
-                    allUsers[i].setMobile(allUsersTemp[i].getMobile());
-                    allUsers[i].setDepartment(allUsersTemp[i].getDepartment());
-                    allUsers[i].setRole(allUsersTemp[i].getRole());
+                    if(!isAllPropertyEmpty(allUsersTemp[i].getUserProperties(), atts)) {
+                        List<String> attsValue = new ArrayList<>();
+                        for(String att : atts) {
+                            attsValue.add(allUsersTemp[i].getUserProperties().getProperty(att));
+                        }
+                        profileClients.add(new UserProfileClient(attsValue.toArray(new String[attsValue.size()])));
+                    }
                 }
+                allUsers = profileClients.toArray(new UserProfileClient[profileClients.size()]);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new UserAdminException(e.getMessage(), e);
         }
         return allUsers;
+    }
+
+    /*
+     * If all property of user is empty then not export to excel
+     */
+    private boolean isAllPropertyEmpty(Properties properties, String[] atts) {
+        for(int i = 0; i < atts.length; i++) {
+            if(properties.getProperty(atts[i]) != null && !properties.getProperty(atts[i]).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

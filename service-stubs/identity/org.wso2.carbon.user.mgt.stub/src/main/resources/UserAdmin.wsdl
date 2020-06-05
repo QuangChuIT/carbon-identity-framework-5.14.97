@@ -57,17 +57,6 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="addUser">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" nillable="true" type="xs:string"/>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="claims" nillable="true" type="ax2764:ClaimValue"/>
-                        <xs:element minOccurs="0" name="profileName" nillable="true" type="xs:string"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
             <xs:element name="addInternalRole">
                 <xs:complexType>
                     <xs:sequence>
@@ -82,6 +71,7 @@
                     <xs:sequence>
                         <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
                         <xs:element minOccurs="0" name="limit" type="xs:int"/>
+                        <xs:element minOccurs="0" name="paramAtts" nillable="true" type="xs:string"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -92,186 +82,22 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="addUser">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="claims" nillable="true" type="ax2764:ClaimValue"/>
+                        <xs:element minOccurs="0" name="profileName" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="changePassword">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string"/>
                         <xs:element minOccurs="0" name="newPassword" nillable="true" type="xs:string"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getUserRealmInfo">
-                <xs:complexType>
-                    <xs:sequence/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getUserRealmInfoResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="return" nillable="true" type="ax2764:UserRealmInfo"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="listAllUsersWithPermission">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="permission" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="listAllUsersWithPermissionResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getAllPermittedRoleNames">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="permission" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getAllPermittedRoleNamesResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getAllSharedRoleNames">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getAllSharedRoleNamesResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="hasMultipleUserStores">
-                <xs:complexType>
-                    <xs:sequence/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="hasMultipleUserStoresResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="return" type="xs:boolean"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getUsersOfRole">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="roleName" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getUsersOfRoleResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="updateUsersOfRole">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="roleName" nillable="true" type="xs:string"/>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="userList" nillable="true" type="ax2764:FlaggedName"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getRolesOfCurrentUser">
-                <xs:complexType>
-                    <xs:sequence/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getRolesOfCurrentUserResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="listAllUsers">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="listAllUsersResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getAllRolesNames">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getAllRolesNamesResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getRolePermissions">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="roleName" nillable="true" type="xs:string"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getRolePermissionsResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="return" nillable="true" type="ax2764:UIPermissionNode"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getRolesOfUser">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
-                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="getRolesOfUserResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="updateRolesOfUser">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string"/>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="newRoleList" nillable="true" type="xs:string"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -377,11 +203,191 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="getRolePermissions">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="roleName" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getRolePermissionsResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax2764:UIPermissionNode"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listAllUsers">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listAllUsersResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getUserRealmInfo">
+                <xs:complexType>
+                    <xs:sequence/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getUserRealmInfoResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax2764:UserRealmInfo"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAllRolesNames">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAllRolesNamesResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAllPermittedRoleNames">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="permission" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAllPermittedRoleNamesResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAllSharedRoleNames">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAllSharedRoleNamesResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="hasMultipleUserStores">
+                <xs:complexType>
+                    <xs:sequence/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="hasMultipleUserStoresResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getUsersOfRole">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="roleName" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getUsersOfRoleResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="updateUsersOfRole">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="roleName" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="userList" nillable="true" type="ax2764:FlaggedName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getRolesOfUser">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getRolesOfUserResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getRolesOfCurrentUser">
+                <xs:complexType>
+                    <xs:sequence/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getRolesOfCurrentUserResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="updateRolesOfUser">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="newRoleList" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listAllUsersWithPermission">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="filter" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="permission" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="limit" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listAllUsersWithPermissionResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax2764:FlaggedName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:schema>
         <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://common.mgt.user.carbon.wso2.org/xsd">
             <xs:complexType name="UserAdminException">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="message" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="UserProfileClient">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="userPropertiesValue" nillable="true" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="ClaimValue">
@@ -390,19 +396,25 @@
                     <xs:element minOccurs="0" name="value" nillable="true" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:complexType name="UserProfileClient">
+            <xs:complexType name="UIPermissionNode">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="country" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="department" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="email" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="firstName" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="fullName" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="lastName" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="mobile" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="organization" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="profileName" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="role" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="telephone" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="displayName" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="nodeList" nillable="true" type="ax2764:UIPermissionNode"/>
+                    <xs:element minOccurs="0" name="resourcePath" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="selected" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="FlaggedName">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="dn" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="domainName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="editable" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="itemDisplayName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="itemName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="readOnly" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="roleType" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="selected" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="shared" type="xs:boolean"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="UserRealmInfo">
@@ -440,27 +452,6 @@
                     <xs:element minOccurs="0" name="userNameRegEx" nillable="true" type="xs:string"/>
                     <xs:element minOccurs="0" name="usernameRegExViolationErrorMsg" nillable="true" type="xs:string"/>
                     <xs:element minOccurs="0" name="writeGroupsEnabled" type="xs:boolean"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="FlaggedName">
-                <xs:sequence>
-                    <xs:element minOccurs="0" name="dn" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="domainName" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="editable" type="xs:boolean"/>
-                    <xs:element minOccurs="0" name="itemDisplayName" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="itemName" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="readOnly" type="xs:boolean"/>
-                    <xs:element minOccurs="0" name="roleType" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="selected" type="xs:boolean"/>
-                    <xs:element minOccurs="0" name="shared" type="xs:boolean"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="UIPermissionNode">
-                <xs:sequence>
-                    <xs:element minOccurs="0" name="displayName" nillable="true" type="xs:string"/>
-                    <xs:element maxOccurs="unbounded" minOccurs="0" name="nodeList" nillable="true" type="ax2764:UIPermissionNode"/>
-                    <xs:element minOccurs="0" name="resourcePath" nillable="true" type="xs:string"/>
-                    <xs:element minOccurs="0" name="selected" type="xs:boolean"/>
                 </xs:sequence>
             </xs:complexType>
         </xs:schema>

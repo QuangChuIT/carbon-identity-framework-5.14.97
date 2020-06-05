@@ -192,9 +192,9 @@ public class UserAdminClient  {
         return new FlaggedName[0];
     }
 
-    public UserProfileClient[] exportUsers(String filter, int limit) throws AxisFault {
+    public UserProfileClient[] exportUsers(String filter, int limit, String paramAtts) throws AxisFault {
         try {
-            return stub.exportUsers(filter, limit);
+            return stub.exportUsers(filter, limit, paramAtts);
         } catch (Exception e) {
             handleException(e);
         }
