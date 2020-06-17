@@ -52,7 +52,7 @@
     <div id="middle">
         <h2><fmt:message key="export.user"/></h2>
         <div id="workArea">
-            <div style="width:900px; height:700px;">
+            <div style="width:900px; height:730px;">
                 <table class="styledLeft noBorders">
                     <thead>
                     <tr>
@@ -67,7 +67,7 @@
                     %>
                     <tr>
                         <%
-                            for(int column = i; column < i + 4; column++) {
+                            for(int column = i; (column < i + 4) && column < localClaims.length; column++) {
                                 LocalClaimDTO localClaim = localClaims[column];
                                 String localClaimURI = localClaim.getLocalClaimURI();
                                 AttributeMappingDTO[] attributeMappings = localClaim.getAttributeMappings();

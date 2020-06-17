@@ -74,11 +74,15 @@ public class CSVUserBulkImport extends UserBulkImport {
                 if (StringUtils.isNotBlank(userName)) {
                     try {
                         if (!userStore.isExistingUser(userName)) {
+                            // generate random password
+                            String randomPassword = generateCommonLangPassword();
                             if (line.length == 1) {
-                                userStore.addUser(userName, null, null, null, null, true);
+                                userStore.addUser(userName, randomPassword, null, null, null, true);
                                 successCount++;
                             } else {
                                 try {
+                                    // replace password
+                                    line[1] = randomPassword;
                                     addUserWithClaims(userName, line, userStore);
                                     successCount++;
                                     if (log.isDebugEnabled()) {

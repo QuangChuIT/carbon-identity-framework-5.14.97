@@ -48,12 +48,6 @@ public class ExportUserManagementServlet extends HttpServlet {
             selectedDomain = UserAdminUIConstants.ALL_DOMAINS;
         }
 
-//        String filter = request.getParameter("filter");
-//        if (StringUtils.isBlank(filter)) {
-//            if (StringUtils.isBlank(filter)) {
-//                filter = "*";
-//            }
-//        }
         String filter = "*";
 
         String modifiedFilter = filter.trim();
@@ -81,13 +75,6 @@ public class ExportUserManagementServlet extends HttpServlet {
 
                 HSSFWorkbook wb2007 = new HSSFWorkbook( );
                 Sheet sheet = wb2007.createSheet("Users");
-//                sheet.setColumnWidth(0, 12*256);
-//                sheet.setColumnWidth(1, 12*256);
-//                sheet.setColumnWidth(2, 25*256);
-//                sheet.setColumnWidth(3, 25*256);
-//                sheet.setColumnWidth(4, 15*256);
-//                sheet.setColumnWidth(5, 12*256);
-//                sheet.setColumnWidth(6, 15*256);
                 CellStyle styleHeader = wb2007.createCellStyle();
 
                 int rownum = 0;
@@ -124,6 +111,9 @@ public class ExportUserManagementServlet extends HttpServlet {
                 OutputStream outStream = response.getOutputStream();
                 outStream.write(outArray);
                 outStream.flush();
+            } else {
+                JOptionPane.showMessageDialog(null, "No data to export",
+                        "Alert", JOptionPane.WARNING_MESSAGE);
             }
 
 

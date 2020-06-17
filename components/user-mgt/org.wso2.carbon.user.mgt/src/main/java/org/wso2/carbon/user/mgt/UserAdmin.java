@@ -638,4 +638,35 @@ public class UserAdmin {
         userProfiles = getUserAdminProxy().exportUsers(filter, limit, paramAtts);
         return userProfiles;
     }
+
+    /**
+     * check status of the user with the given user name
+     *
+     * @param userName The user name
+     * @throws UserStoreException An unexpected exception has occurred
+     */
+    public boolean doCheckUserIsLocked(String userName) throws UserAdminException {
+        return getUserAdminProxy().doCheckUserIsLocked(userName);
+    }
+
+    /**
+     * check password expiry
+     *
+     * @param userName The user name
+     * @throws UserStoreException An unexpected exception has occurred
+     */
+    public boolean doCheckRequireChangeExpiryPassword(String userName) throws UserAdminException {
+        return getUserAdminProxy().doCheckRequireChangeExpiryPassword(userName);
+    }
+
+    /**
+     * check the user login first time with the given user name
+     *
+     * @param userName The user name
+     * @throws UserStoreException An unexpected exception has occurred
+     */
+    public boolean doCheckRequireChangePasswordWhenFirstLogin(String userName) throws UserAdminException {
+        return getUserAdminProxy().doCheckRequireChangePasswordWhenFirstLogin(userName);
+    }
+
 }

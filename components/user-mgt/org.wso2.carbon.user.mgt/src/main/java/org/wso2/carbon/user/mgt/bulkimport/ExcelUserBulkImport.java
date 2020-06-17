@@ -83,7 +83,9 @@ public class ExcelUserBulkImport extends UserBulkImport {
             if (StringUtils.isNotBlank(userName)) {
                 try {
                     if (!userStore.isExistingUser(userName)) {
-                        userStore.addUser(userName, null, null, null, null, true);
+                        // generate random password
+                        String randomPassword = generateCommonLangPassword();
+                        userStore.addUser(userName, randomPassword, null, null, null, true);
                         successCount++;
                         if (log.isDebugEnabled()) {
                             log.debug("User import successful - Username : " + userName);

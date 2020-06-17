@@ -699,7 +699,8 @@ public class UserRealmProxy {
 
     private boolean isBulkImportSupported(RealmConfiguration realmConfig) throws UserAdminException {
         if (realmConfig != null) {
-            return Boolean.valueOf(realmConfig.getUserStoreProperties().get("IsBulkImportSupported"));
+            return Boolean.valueOf(realmConfig.getUserStoreProperties().get("IsBulkImportSupported")) ||
+                    Boolean.valueOf(realmConfig.getUserStoreProperties().get("BulkImportSupported"));
         } else {
             throw new UserAdminException("Unable to retrieve user store manager from realm.");
         }
@@ -2371,4 +2372,55 @@ public class UserRealmProxy {
         }
         return true;
     }
+
+    public boolean doCheckUserIsLocked(String userName) throws UserAdminException {
+        try {
+
+            UserStoreManager userStoreMan = realm.getUserStoreManager();
+            // check user locked
+            if (userStoreMan instanceof AbstractUserStoreManager) {
+                return  ((AbstractUserStoreManager) userStoreMan).doCheckUserIsLocked(userName);
+            } else {
+                throw new UserAdminException(
+                        "Initialized User Store Manager is not support check user locked");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new UserAdminException(e.getMessage(), e);
+        }
+    }
+
+    public boolean doCheckRequireChangeExpiryPassword(String userName) throws UserAdminException {
+        try {
+            UserStoreManager userStoreMan = realm.getUserStoreManager();
+            // check user locked
+            if (userStoreMan instanceof AbstractUserStoreManager) {
+                return  ((AbstractUserStoreManager) userStoreMan).doCheckRequireChangeExpiryPassword(userName);
+            } else {
+                throw new UserAdminException(
+                        "Initialized User Store Manager is not support check user require change password");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new UserAdminException(e.getMessage(), e);
+        }
+    }
+
+    public boolean doCheckRequireChangePasswordWhenFirstLogin(String userName) throws UserAdminException {
+        try {
+            UserStoreManager userStoreMan = realm.getUserStoreManager();
+            // check user locked
+            if (userStoreMan instanceof AbstractUserStoreManager) {
+                return  ((AbstractUserStoreManager) userStoreMan).doCheckRequireChangePasswordWhenFirstLogin(userName);
+            } else {
+                throw new UserAdminException(
+                        "Initialized User Store Manager is not support check user require change password");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new UserAdminException(e.getMessage(), e);
+        }
+    }
+
+
 }
