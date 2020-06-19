@@ -699,8 +699,7 @@ public class UserRealmProxy {
 
     private boolean isBulkImportSupported(RealmConfiguration realmConfig) throws UserAdminException {
         if (realmConfig != null) {
-            return Boolean.valueOf(realmConfig.getUserStoreProperties().get("IsBulkImportSupported")) ||
-                    Boolean.valueOf(realmConfig.getUserStoreProperties().get("BulkImportSupported"));
+            return Boolean.valueOf(realmConfig.getUserStoreProperties().get("IsBulkImportSupported"));
         } else {
             throw new UserAdminException("Unable to retrieve user store manager from realm.");
         }

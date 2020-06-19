@@ -18,8 +18,7 @@
         ClaimMetadataManagementAdminService adminService = new ClaimMetadataManagementAdminService();
         localClaims = adminService.getLocalClaims();
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error in Export. " + e.getMessage(),
-                "Alert", JOptionPane.WARNING_MESSAGE);
+
     }
 %>
 
