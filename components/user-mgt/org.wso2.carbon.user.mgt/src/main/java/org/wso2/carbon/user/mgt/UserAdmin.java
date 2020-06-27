@@ -31,6 +31,7 @@ import org.wso2.carbon.user.api.AuthorizationManager;
 import org.wso2.carbon.user.api.UserRealmService;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.user.core.jdbc.JDBCUserStoreManager;
 import org.wso2.carbon.user.core.model.UserProfile;
 import org.wso2.carbon.user.mgt.common.*;
 import org.wso2.carbon.user.mgt.internal.UserMgtDSComponent;
@@ -655,8 +656,8 @@ public class UserAdmin {
      * @param userName The user name
      * @throws UserStoreException An unexpected exception has occurred
      */
-    public boolean doCheckRequireChangeExpiryPassword(String userName) throws UserAdminException {
-        return getUserAdminProxy().doCheckRequireChangeExpiryPassword(userName);
+    public int getNumberDayPasswordWillExpiry(String userName) throws UserAdminException {
+        return getUserAdminProxy().getNumberDayPasswordWillExpiry(userName);
     }
 
     /**
@@ -667,6 +668,10 @@ public class UserAdmin {
      */
     public boolean doCheckRequireChangePasswordWhenFirstLogin(String userName) throws UserAdminException {
         return getUserAdminProxy().doCheckRequireChangePasswordWhenFirstLogin(userName);
+    }
+
+    public JDBCUserStoreManager getJDBCUserStoreManagerFromDomain(String domain) throws UserAdminException {
+        return getUserAdminProxy().getJDBCUserStoreManagerFromDomain(domain);
     }
 
 }
