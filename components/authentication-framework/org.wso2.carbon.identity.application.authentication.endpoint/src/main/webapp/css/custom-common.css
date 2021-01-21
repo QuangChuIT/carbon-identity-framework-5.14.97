@@ -45,7 +45,7 @@ header .brand h1 em {
 .header-block .unit-logo .image-logo {
     margin-top: 16px;
     margin-bottom: 0px;
-    width: 100px;
+    /*width: 100%;*/
     height: 100px;
 }
 

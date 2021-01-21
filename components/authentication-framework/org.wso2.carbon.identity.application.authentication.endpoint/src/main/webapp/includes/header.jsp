@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
@@ -23,7 +24,7 @@
 <header class="header header-default">
     <div class="header-block">
         <div class="unit-logo">
-            <img src="images/logo_bacninh.png" class="image-logo" alt="">
+            <img alt="" class="image-logo" src="<c:url value="/images/logo/logo_gdnn.png"/>">
         </div>
         <div class="title_logo">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%>

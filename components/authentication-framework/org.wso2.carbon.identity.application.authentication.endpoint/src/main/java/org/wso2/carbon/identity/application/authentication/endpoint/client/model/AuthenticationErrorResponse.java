@@ -105,5 +105,6 @@ public class AuthenticationErrorResponse extends AuthenticationResponse {
             this.properties.putAll(properties);
         }
     }
+
 }
 

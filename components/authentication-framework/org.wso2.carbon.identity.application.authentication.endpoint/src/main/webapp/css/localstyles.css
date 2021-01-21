@@ -47,7 +47,7 @@ body {
 }
 
 .logo {
-    background: transparent url(../images/logo.png) no-repeat left top;
+    background: transparent url(../images/logo/logo.png) no-repeat left top;
     width: 424px;
     height: 85px;
     display: block;

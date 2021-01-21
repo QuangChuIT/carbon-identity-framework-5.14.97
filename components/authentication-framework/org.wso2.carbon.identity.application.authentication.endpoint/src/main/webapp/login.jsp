@@ -50,233 +50,235 @@
     private static final String X509_CERTIFICATE_AUTHENTICATOR = "x509CertificateAuthenticator";
 %>
 
+<%
+    request.getSession().invalidate();
+    String queryString = request.getQueryString();
+    Map<String, String> idpAuthenticatorMapping = null;
+    if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
+        idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
+    }
+
+    String errorMessage = "authentication.failed.please.retry";
+    String errorCode = "";
+    if (request.getParameter(Constants.ERROR_CODE) != null) {
+        errorCode = request.getParameter(Constants.ERROR_CODE);
+    }
+    String loginFailed = "false";
+
+    if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
+        loginFailed = "true";
+        String error = request.getParameter(Constants.AUTH_FAILURE_MSG);
+        if (error != null && !error.isEmpty()) {
+            errorMessage = error;
+        }
+    }
+%>
+<%
+
+    boolean hasLocalLoginOptions = false;
+    boolean isBackChannelBasicAuth = false;
+    List<String> localAuthenticatorNames = new ArrayList<String>();
+
+    if (idpAuthenticatorMapping != null && idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME) != null) {
+        String authList = idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME);
+        if (authList != null) {
+            localAuthenticatorNames = Arrays.asList(authList.split(","));
+        }
+    }
+
+
+%>
+<%
+    boolean reCaptchaEnabled = false;
+    if (request.getParameter("reCaptcha") != null && "TRUE".equalsIgnoreCase(request.getParameter("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
+%>
+<%
+    String inputType = request.getParameter("inputType");
+    String username = null;
+
+    if (isIdentifierFirstLogin(inputType)) {
+        String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
+        if (StringUtils.isBlank(authAPIURL)) {
+            authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+        }
+        if (!authAPIURL.endsWith("/")) {
+            authAPIURL += "/";
+        }
+        authAPIURL += "context/" + request.getParameter("sessionDataKey");
+        String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
+        Gson gson = new Gson();
+        Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
+        username = (String) parameters.get("username");
+    }
+
+%>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- title -->
     <%
-        request.getSession().invalidate();
-        String queryString = request.getQueryString();
-        Map<String, String> idpAuthenticatorMapping = null;
-        if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
-            idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
-        }
-
-        String errorMessage = "authentication.failed.please.retry";
-        String errorCode = "";
-        if(request.getParameter(Constants.ERROR_CODE)!=null){
-            errorCode = request.getParameter(Constants.ERROR_CODE) ;
-        }
-        String loginFailed = "false";
-
-        if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-            loginFailed = "true";
-            String error = request.getParameter(Constants.AUTH_FAILURE_MSG);
-            if (error != null && !error.isEmpty()) {
-                errorMessage = error;
-            }
-        }
+        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
+        if (titleFile.exists()) {
     %>
-    <%
-
-        boolean hasLocalLoginOptions = false;
-        boolean isBackChannelBasicAuth = false;
-        List<String> localAuthenticatorNames = new ArrayList<String>();
-
-        if (idpAuthenticatorMapping != null && idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME) != null) {
-            String authList = idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME);
-            if (authList != null) {
-                localAuthenticatorNames = Arrays.asList(authList.split(","));
-            }
-        }
-
-
-    %>
-    <%
-        boolean reCaptchaEnabled = false;
-        if (request.getParameter("reCaptcha") != null && "TRUE".equalsIgnoreCase(request.getParameter("reCaptcha"))) {
-            reCaptchaEnabled = true;
-        }
-    %>
-    <%
-        String inputType = request.getParameter("inputType");
-        String username = null;
-    
-        if (isIdentifierFirstLogin(inputType)) {
-            String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-            if (StringUtils.isBlank(authAPIURL)) {
-                authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
-            }
-            if (!authAPIURL.endsWith("/")) {
-                authAPIURL += "/";
-            }
-            authAPIURL += "context/" + request.getParameter("sessionDataKey");
-            String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-            Gson gson = new Gson();
-            Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
-            username = (String) parameters.get("username");
-        }
-        
-    %>
-    <html>
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- title -->
-        <%
-            File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-            if (titleFile.exists()) {
-        %>
-                <jsp:include page="extensions/title.jsp"/>
-        <% } else { %>
-                <jsp:directive.include file="includes/title.jsp"/>
-        <% } %>
-
-        <link rel="icon" href="images/favicon2.pnggin" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/custom-common.css" rel="stylesheet">
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-
-        <%
-            if (reCaptchaEnabled) {
-        %>
-        <script src='<%=
-        (Encode.forJavaScriptSource(request.getParameter("reCaptchaAPI")))%>'></script>
-        <%
-            }
-        %>
-
-         <script>
-
-	function checkSessionKey() {
-                $.ajax({
-                    type: "GET",
-                    url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + getParameterByName("tenantDomain"),
-                    success: function (data) {
-                        console.log(data);
-                        if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
-                            window.location.href = data.redirectUrl;
-                        }
-                    },
-                    cache: false
-                });
-            }
-
-
-	function getParameterByName(name, url) {
-             if (!url) {
-                url = window.location.href;
-             }
-             name = name.replace(/[\[\]]/g, '\\$&');
-             var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-             results = regex.exec(url);
-             if (!results) return null;
-             if (!results[2]) return "";
-             return decodeURIComponent(results[2].replace(/\+/g, ' '));
-         }
-         </script>
-    </head>
-
-    <body onload="checkSessionKey()" class="body-login">
-    <!-- header -->
-    <%
-        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-        if (headerFile.exists()) {
-    %>
-            <jsp:include page="extensions/header.jsp"/>
+    <jsp:include page="extensions/title.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:directive.include file="includes/title.jsp"/>
     <% } %>
 
-    <!-- page content -->
-    <div class="container-fluid body-wrapper">
-        <div class="row">
-            <div class="col-md-12">
-                <!-- content -->
-                <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 wr-content wr-login col-centered">
-                    <div class="boarder-all ">
-                        <div class="clearfix"></div>
-                        <div class="login-header">
-                            <h1 class="title-login">
-                                <%
-                                    if (isIdentifierFirstLogin(inputType)) {
-                                %>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") + " " + username%>
+    <link rel="icon" href="images/favicon2.png" type="image/x-icon"/>
+    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom-common.css" rel="stylesheet">
 
-                                <%
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+    <%
+        if (reCaptchaEnabled) {
+    %>
+    <script src='<%=
+        (Encode.forJavaScriptSource(request.getParameter("reCaptchaAPI")))%>'></script>
+    <%
+        }
+    %>
+
+    <script>
+
+        function checkSessionKey() {
+            $.ajax({
+                type: "GET",
+                url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + getParameterByName("tenantDomain"),
+                success: function (data) {
+                    console.log(data);
+                    if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
+                        window.location.href = data.redirectUrl;
+                    }
+                },
+                cache: false
+            });
+        }
+
+
+        function getParameterByName(name, url) {
+            if (!url) {
+                url = window.location.href;
+            }
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return "";
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+    </script>
+</head>
+
+<body onload="checkSessionKey()" class="body-login">
+<!-- header -->
+<%
+    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+    if (headerFile.exists()) {
+%>
+<jsp:include page="extensions/header.jsp"/>
+<% } else { %>
+<jsp:directive.include file="includes/header.jsp"/>
+<% } %>
+
+<!-- page content -->
+<div class="container-fluid body-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- content -->
+            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 wr-content wr-login col-centered">
+                <div class="boarder-all ">
+                    <div class="clearfix"></div>
+                    <div class="login-header">
+                        <h1 class="title-login">
+                            <%
+                                if (isIdentifierFirstLogin(inputType)) {
+                            %>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") + " " + username%>
+
+                            <%
+                            } else {
+                            %>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+                            <%
+                                }
+                            %>
+
+                        </h1>
+                    </div>
+                    <div class="padding-double login-form">
+                        <%
+                            if (localAuthenticatorNames.size() > 0) {
+
+                                if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(OPEN_ID_AUTHENTICATOR)) {
+                                    hasLocalLoginOptions = true;
+                        %>
+
+                        <%@ include file="openid.jsp" %>
+                        <%
+                        } else if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
+                            hasLocalLoginOptions = true;
+                        %>
+                        <%@ include file="identifierauth.jsp" %>
+                        <%
+                        } else if (localAuthenticatorNames.size() > 0) {
+                            hasLocalLoginOptions = true;
+                            boolean includeBasicAuth = true;
+                            if (localAuthenticatorNames.contains(JWT_BASIC_AUTHENTICATOR)) {
+                                if (Boolean.parseBoolean(application.getInitParameter(ENABLE_AUTHENTICATION_WITH_REST_API))) {
+                                    isBackChannelBasicAuth = true;
                                 } else {
-                                %>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
-                                <%
-                                    }
-                                %>
-
-                            </h1>
-                        </div>
-                        <div class="padding-double login-form">
-                            <%
-                                if (localAuthenticatorNames.size() > 0) {
-
-                                    if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(OPEN_ID_AUTHENTICATOR)) {
-                                        hasLocalLoginOptions = true;
-                            %>
-
-                            <%@ include file="openid.jsp" %>
-                            <%
-                            } else if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
-                                hasLocalLoginOptions = true;
-                            %>
-                                <%@ include file="identifierauth.jsp" %>
-                            <%
-                            } else if (localAuthenticatorNames.size() > 0) {
-                                hasLocalLoginOptions = true;
-                                boolean includeBasicAuth = true;
-                                if (localAuthenticatorNames.contains(JWT_BASIC_AUTHENTICATOR)) {
-                                    if (Boolean.parseBoolean(application.getInitParameter(ENABLE_AUTHENTICATION_WITH_REST_API))) {
-                                        isBackChannelBasicAuth = true;
-                                    } else {
-                                        String redirectURL = "error.do?" + STATUS + "=" + CONFIGURATION_ERROR + "&" +
-                                                STATUS_MSG + "=" + AUTHENTICATION_MECHANISM_NOT_CONFIGURED;
-                                        response.sendRedirect(redirectURL);
-                                    }
-                                } else if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR)) {
-                                    isBackChannelBasicAuth = false;
+                                    String redirectURL = "error.do?" + STATUS + "=" + CONFIGURATION_ERROR + "&" +
+                                            STATUS_MSG + "=" + AUTHENTICATION_MECHANISM_NOT_CONFIGURED;
+                                    response.sendRedirect(redirectURL);
+                                }
+                            } else if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR)) {
+                                isBackChannelBasicAuth = false;
                                 if (TenantDataManager.isTenantListEnabled() && Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) {
                                     includeBasicAuth = false;
-%>
-                            <%@ include file="tenantauth.jsp" %>
-<%
-                            }
+                        %>
+                        <%@ include file="tenantauth.jsp" %>
+                        <%
                                 }
+                            }
 
                             if (includeBasicAuth) {
-                                        %>
-                                            <%@ include file="basicauth.jsp" %>
-                                        <%
+                        %>
+                        <%@ include file="basicauth.jsp" %>
+                        <%
                                     }
                                 }
                             }
-                            %>
+                        %>
 
-                            <%if (idpAuthenticatorMapping != null &&
-                                    idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME) != null) { %>
+                        <%
+                            if (idpAuthenticatorMapping != null &&
+                                    idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME) != null) {
+                        %>
 
+                        <%} %>
+                        <%
+                            if ((hasLocalLoginOptions && localAuthenticatorNames.size() > 1) || (!hasLocalLoginOptions)
+                                    || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
+                        %>
+                        <div class="form-group">
+                            <% if (hasLocalLoginOptions) { %>
+                            <label class="font-large"><%=AuthenticationEndpointUtil.i18n(resourceBundle,
+                                    "other.login.options")%>:</label>
                             <%} %>
+                        </div>
+                        <div class="form-group">
                             <%
-                                if ((hasLocalLoginOptions && localAuthenticatorNames.size() > 1) || (!hasLocalLoginOptions)
-                                        || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
-                            %>
-                            <div class="form-group">
-                                <% if (hasLocalLoginOptions) { %>
-                                <label class="font-large"><%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                        "other.login.options")%>:</label>
-                                <%} %>
-                            </div>
-                            <div class="form-group">
-                                <%
-                                    int iconId = 0;
-                                    if (idpAuthenticatorMapping != null) {
+                                int iconId = 0;
+                                if (idpAuthenticatorMapping != null) {
                                     for (Map.Entry<String, String> idpEntry : idpAuthenticatorMapping.entrySet()) {
                                         iconId++;
                                         if (!idpEntry.getKey().equals(Constants.RESIDENT_IDP_RESERVED_NAME)) {
@@ -286,9 +288,9 @@
                                                 isHubIdp = true;
                                                 idpName = idpName.substring(0, idpName.length() - 4);
                                             }
-                                %>
-                                <% if (isHubIdp) { %>
-                                <div>
+                            %>
+                            <% if (isHubIdp) { %>
+                            <div>
                                 <a href="#" data-toggle="popover" data-placement="bottom"
                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"sign.in.with")%>
                                     <%=Encode.forHtmlAttribute(idpName)%>" id="popover" id="icon-<%=iconId%>">
@@ -297,8 +299,9 @@
                                          <%=Encode.forHtmlAttribute(idpName)%>"/>
 
                                     <div id="popover-head" class="hide">
-                                        <label class="font-large"><%=AuthenticationEndpointUtil.i18n(resourceBundle,"sign.in.with")%>
-                                            <%=Encode.forHtmlContent(idpName)%></label>
+                                        <label class="font-large"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=Encode.forHtmlContent(idpName)%>
+                                        </label>
                                     </div>
                                     <div id="popover-content" class="hide">
                                         <form class="form-inline">
@@ -314,10 +317,11 @@
 
                                     </div>
                                 </a>
-                                    <label for="icon-<%=iconId%>"><%=Encode.forHtmlContent(idpName)%></label>
-                                </div>
-                                <%} else { %>
-                                <div>
+                                <label for="icon-<%=iconId%>"><%=Encode.forHtmlContent(idpName)%>
+                                </label>
+                            </div>
+                            <%} else { %>
+                            <div>
                                 <a onclick="javascript: handleNoDomain('<%=Encode.forJavaScriptAttribute(Encode.
                                 forUriComponent(idpName))%>',
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
@@ -326,58 +330,62 @@
                                          data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
                                                        "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"/>
                                 </a>
-                                <label for="icon-<%=iconId%>"><%=Encode.forHtmlContent(idpName)%></label>
-                                    </div>
-                                <%} %>
-                                <%
-                                } else if (localAuthenticatorNames.size() > 0) {
-                                    if (localAuthenticatorNames.contains(IWA_AUTHENTICATOR)) {
-                                %>
-                                <div>
+                                <label for="icon-<%=iconId%>"><%=Encode.forHtmlContent(idpName)%>
+                                </label>
+                            </div>
+                            <%} %>
+                            <%
+                            } else if (localAuthenticatorNames.size() > 0) {
+                                if (localAuthenticatorNames.contains(IWA_AUTHENTICATOR)) {
+                            %>
+                            <div>
                                 <a onclick="javascript: handleNoDomain('<%=Encode.forJavaScriptAttribute(Encode.
                                 forUriComponent(idpEntry.getKey()))%>',
-                                        'IWAAuthenticator')" class="main-link" style="cursor:pointer" id="icon-<%=iconId%>">
+                                        'IWAAuthenticator')" class="main-link" style="cursor:pointer"
+                                   id="icon-<%=iconId%>">
                                     <img class="idp-image" src="images/login-icon.png" data-toggle="tooltip"
                                          data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
                                                        "sign.in.with")%> IWA"/>
                                 </a>
                                 <label for="icon-<%=iconId%>">IWA</label>
-                                </div>
-                                <%
-                                    }
-                                    if (localAuthenticatorNames.contains(X509_CERTIFICATE_AUTHENTICATOR)) {
-                                %>
-                                <div>
-                                    <a onclick="javascript: handleNoDomain('<%=Encode.forJavaScriptAttribute(Encode.
-                                forUriComponent(idpEntry.getKey()))%>',
-                                            'x509CertificateAuthenticator')" class="main-link" style="cursor:pointer" id="icon-<%=iconId%>">
-                                        <img class="idp-image" src="images/login-icon.png" data-toggle="tooltip"
-                                             data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                                       "sign.in.with")%> X509 Certificate"/>
-                                    </a>
-                                    <label for="icon-<%=iconId%>">x509CertificateAuthenticator</label>
-
-                                </div>
-                                <%
-                                    }
-                                    if (localAuthenticatorNames.contains(FIDO_AUTHENTICATOR)) {
-                                %>
-                                <div>
+                            </div>
+                            <%
+                                }
+                                if (localAuthenticatorNames.contains(X509_CERTIFICATE_AUTHENTICATOR)) {
+                            %>
+                            <div>
                                 <a onclick="javascript: handleNoDomain('<%=Encode.forJavaScriptAttribute(Encode.
                                 forUriComponent(idpEntry.getKey()))%>',
-                                        'FIDOAuthenticator')" class="main-link" style="cursor:pointer" id="icon-<%=iconId%>">
+                                        'x509CertificateAuthenticator')" class="main-link" style="cursor:pointer"
+                                   id="icon-<%=iconId%>">
+                                    <img class="idp-image" src="images/login-icon.png" data-toggle="tooltip"
+                                         data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
+                                                       "sign.in.with")%> X509 Certificate"/>
+                                </a>
+                                <label for="icon-<%=iconId%>">x509CertificateAuthenticator</label>
+
+                            </div>
+                            <%
+                                }
+                                if (localAuthenticatorNames.contains(FIDO_AUTHENTICATOR)) {
+                            %>
+                            <div>
+                                <a onclick="javascript: handleNoDomain('<%=Encode.forJavaScriptAttribute(Encode.
+                                forUriComponent(idpEntry.getKey()))%>',
+                                        'FIDOAuthenticator')" class="main-link" style="cursor:pointer"
+                                   id="icon-<%=iconId%>">
                                     <img class="idp-image" src="images/login-icon.png" data-toggle="tooltip"
                                          data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
                                                        "sign.in.with")%> FIDO"/>
                                 </a>
                                 <label for="icon-<%=iconId%>">FIDO</label>
 
-                                </div>
-                                <%
-                                            }
-                                    if (localAuthenticatorNames.contains("totp")) {
-                                %>
-                                <div>
+                            </div>
+                            <%
+                                }
+                                if (localAuthenticatorNames.contains("totp")) {
+                            %>
+                            <div>
                                 <a onclick="javascript: handleNoDomain('<%=Encode.forJavaScriptAttribute(Encode.
                                 forUriComponent(idpEntry.getKey()))%>',
                                         'totp')" class="main-link" style="cursor:pointer" id="icon-<%=iconId%>">
@@ -387,126 +395,128 @@
                                 </a>
                                 <label for="icon-<%=iconId%>">TOTP</label>
 
-                                </div>
-                                <%
+                            </div>
+                            <%
                                             }
                                         }
 
                                     }
-                                    }%>
-
-                            </div>
-
-
-                            <% } %>
+                                }%>
 
                         </div>
+
+
+                        <% } %>
+
                     </div>
-                    <!-- /content -->
                 </div>
+                <!-- /content -->
             </div>
-            <!-- /content/body -->
-
         </div>
+        <!-- /content/body -->
+
     </div>
+</div>
 
-    <%--<!-- footer -->
-    <%
-        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-        if (footerFile.exists()) {
-    %>
-            <jsp:include page="extensions/footer.jsp"/>
-    <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
-    <% } %>--%>
+<%--<!-- footer -->
+<%
+    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+    if (footerFile.exists()) {
+%>
+        <jsp:include page="extensions/footer.jsp"/>
+<% } else { %>
+        <jsp:directive.include file="includes/footer.jsp"/>
+<% } %>--%>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $('.main-link').click(function () {
-                $('.main-link').next().hide();
-                $(this).next().toggle('fast');
-                var w = $(document).width();
-                var h = $(document).height();
-                $('.overlay').css("width", w + "px").css("height", h + "px").show();
-            });
-            $('[data-toggle="popover"]').popover();
-            $('.overlay').click(function () {
-                $(this).hide();
-                $('.main-link').next().hide();
-            });
-
-            <%
-            if(reCaptchaEnabled) {
-            %>
-            var error_msg = $("#error-msg");
-            $("#loginForm").submit(function (e) {
-                var resp = $("[name='g-recaptcha-response']")[0].value;
-                if (resp.trim() == '') {
-                    error_msg.text("<%=AuthenticationEndpointUtil.i18n(resourceBundle,"please.select.recaptcha")%>");
-                    error_msg.show();
-                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                    return false;
-                }
-                return true;
-            });
-            <%
-            }
-            %>
+<script>
+    $(document).ready(function () {
+        $('.main-link').click(function () {
+            $('.main-link').next().hide();
+            $(this).next().toggle('fast');
+            var w = $(document).width();
+            var h = $(document).height();
+            $('.overlay').css("width", w + "px").css("height", h + "px").show();
         });
-        function myFunction(key, value, name) {
-            var object = document.getElementById(name);
-            var domain = object.value;
+        $('[data-toggle="popover"]').popover();
+        $('.overlay').click(function () {
+            $(this).hide();
+            $('.main-link').next().hide();
+        });
 
-
-            if (domain != "") {
-                document.location = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
-                        "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>&domain=" +
-                        domain;
-            } else {
-                document.location = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
-                        "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>";
+        <%
+        if(reCaptchaEnabled) {
+        %>
+        var error_msg = $("#error-msg");
+        $("#loginForm").submit(function (e) {
+            var resp = $("[name='g-recaptcha-response']")[0].value;
+            if (resp.trim() == '') {
+                error_msg.text("<%=AuthenticationEndpointUtil.i18n(resourceBundle,"please.select.recaptcha")%>");
+                error_msg.show();
+                $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                return false;
             }
+            return true;
+        });
+        <%
         }
+        %>
+    });
 
-        function handleNoDomain(key, value) {
-            <%
-                String multiOptionURIParam = "";
-                if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
-                    multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(request.getRequestURI() +
-                        (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
-                }
-            %>
+    function myFunction(key, value, name) {
+        var object = document.getElementById(name);
+        var domain = object.value;
+
+
+        if (domain != "") {
             document.location = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
-                    "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>" +
-                    "<%=multiOptionURIParam%>";
+                "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>&domain=" +
+                domain;
+        } else {
+            document.location = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
+                "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>";
         }
+    }
 
-        $('#popover').popover({
-            html: true,
-            title: function () {
-                return $("#popover-head").html();
-            },
-            content: function () {
-                return $("#popover-content").html();
+    function handleNoDomain(key, value) {
+        <%
+            String multiOptionURIParam = "";
+            if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
+                multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(request.getRequestURI() +
+                    (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
             }
-        });
-        window.onunload = function(){};
-    </script>
+        %>
+        document.location = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
+            "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>" +
+            "<%=multiOptionURIParam%>";
+    }
 
-    <script>
-        function changeUsername (e) {
-            document.getElementById("changeUserForm").submit();
+    $('#popover').popover({
+        html: true,
+        title: function () {
+            return $("#popover-head").html();
+        },
+        content: function () {
+            return $("#popover-content").html();
         }
-    </script>
+    });
+    window.onunload = function () {
+    };
+</script>
 
-    <%!
-        private boolean isIdentifierFirstLogin(String inputType) {
-            return "idf".equalsIgnoreCase(inputType);
-        }
-    %>
+<script>
+    function changeUsername(e) {
+        document.getElementById("changeUserForm").submit();
+    }
+</script>
 
-    </body>
-    </html>
+<%!
+    private boolean isIdentifierFirstLogin(String inputType) {
+        return "idf".equalsIgnoreCase(inputType);
+    }
+%>
+
+</body>
+</html>

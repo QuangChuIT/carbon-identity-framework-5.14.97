@@ -63,7 +63,6 @@ public class AuthContextAPIClient {
             httpsURLConnection.setDoOutput(true);
             httpsURLConnection.setDoInput(true);
             httpsURLConnection.setRequestMethod(HTTP_METHOD_GET);
-
             httpsURLConnection.setRequestProperty(MutualSSLManager.getUsernameHeaderName(), MutualSSLManager.getCarbonLogin());
 
             inputStream = httpsURLConnection.getInputStream();

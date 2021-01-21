@@ -22,7 +22,7 @@
 
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">form-actions
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- title -->
@@ -87,7 +87,7 @@
                         <div class="row">
                             <div class="span12">
                                 <h1>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "logged. out")%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "logged.out")%>
                                 </h1>
                             </div>
                         </div>
