@@ -42,6 +42,7 @@ import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.carbon.user.core.UserStoreManager;
 import org.wso2.carbon.user.core.common.AbstractUserStoreManager;
+import org.wso2.carbon.user.core.jdbc.JDBCUserStoreManager;
 import org.wso2.carbon.user.core.util.UserCoreUtil;
 import org.wso2.carbon.user.mgt.bulkimport.BulkImportConfig;
 import org.wso2.carbon.user.mgt.bulkimport.CSVUserBulkImport;
@@ -2325,6 +2326,18 @@ public class UserRealmProxy {
         return ret;
     }
 
+    public JDBCUserStoreManager getJDBCUserStoreManagerFromDomain(String domain) {
+        try {
+            UserStoreManager userStoreManager = realm.getUserStoreManager().getSecondaryUserStoreManager(domain);
+            if (userStoreManager instanceof JDBCUserStoreManager) {
+                return (JDBCUserStoreManager) userStoreManager;
+            }
+        }catch (Exception e) {
+            log.error("Can not get user store from domain: " + domain);
+        }
+        return null;
+    }
+
     private class ClaimMappingsComparator implements Comparator<ClaimMapping> {
 
         @Override
@@ -2389,12 +2402,12 @@ public class UserRealmProxy {
         }
     }
 
-    public boolean doCheckRequireChangeExpiryPassword(String userName) throws UserAdminException {
+    public int getNumberDayPasswordWillExpiry(String userName) throws UserAdminException {
         try {
             UserStoreManager userStoreMan = realm.getUserStoreManager();
             // check user locked
             if (userStoreMan instanceof AbstractUserStoreManager) {
-                return  ((AbstractUserStoreManager) userStoreMan).doCheckRequireChangeExpiryPassword(userName);
+                return  ((AbstractUserStoreManager) userStoreMan).getNumberDayPasswordWillExpiry(userName);
             } else {
                 throw new UserAdminException(
                         "Initialized User Store Manager is not support check user require change password");
