@@ -49,7 +49,7 @@ public class XFrameHeaderFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         LOGGER.info("-------------------------- X-Frame-Options header added to response --------------------");
-        ((HttpServletResponse) response).addHeader("x-frame-options", "SAMEORIGIN");
+        ((HttpServletResponse) response).addHeader("X-FRAME-OPTIONS", "ALLOW FROM https://egov.cmv.vn");
         chain.doFilter(request, response);
     }
 

@@ -24,10 +24,10 @@
 <header class="header header-default">
     <div class="header-block">
         <div class="unit-logo">
-            <img alt="" class="image-logo" src="<c:url value="/images/logo/logo_gdnn.png"/>">
+<%--            <img alt="" class="image-logo" src="<c:url value="/images/logo/logo_gdnn.png"/>">--%>
         </div>
         <div class="title_logo">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%>
+<%--            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%>--%>
         </div>
     </div>
     <%--<div class="container-fluid"><br></div>
